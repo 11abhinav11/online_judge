@@ -4,6 +4,10 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from .forms import signup_form, login_form
 
 
+def error(request):
+    return render(request, 'error.html')
+
+
 def index(request):
     if request.user.is_authenticated:
         return HttpResponse("<h1> yes</h1>")

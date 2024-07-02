@@ -1,5 +1,7 @@
 from django.contrib import admin
-
 from .models import contest
 
-admin.site.register(contest)
+
+@admin.register(contest)
+class contestAdmin(admin.ModelAdmin):
+    filter_horizontal = ("problems", )
