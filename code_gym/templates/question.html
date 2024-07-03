@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Problems{% endblock %}
+{% block content %}
+<div class="d-flex flex-row mb-3 gap-3 p-3" style="background-color: black;">
+    <div class="border border-0 shadow mb-5 rounded-3 flex h-full w-full flex-col w-50 overflow-auto text-white" style="max-height: 700px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
+        <div class="p-2 border-bottom text-white" style="background-color: #333;">
+            <i class="fa fa-solid fa-bars" style="color: #74C0FC;"></i>
+            <b>Description</b>
+        </div>
+        <h1 class="p-3">{{question.title}}</h1>
+        <p class="p-3">{{question.question|linebreaksbr}}</p>
+        <p class="p-3">Tags {{question.tags}}</p>
+    </div>
+    <div class="flex h-full w-full flex-col shadow mb-5 border border-0 rounded-3 w-50" style="max-height: 700px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
+        <div class="p-2 text-white border border-0 rounded-3" style="background-color: #333;">
+            <i class="fa fa-solid fa-bug" style="color: #74C0FC;"></i>
+            <b>Code</b>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+        <div class="p-2 border-top text-white">
+            <b>{{ form.language}}</b>
+        </div>
+        <div class="border-top  p-2 overflow-auto text-white" style="max-height: 600px;">
+            {{form.code}}
+        </div>
+        <div class="d-flex flex-row-reverse p-2 overflow-auto text-white gap-2 border-bottom align-content-end" style="max-height: 200px;">
+            <button class="btn btn-success ">Submit</button>
+            <button class="btn text-white " style="background-color: #333;">Run</button>
+        </div>
+        <div class="p-2 text-white">
+            <b>Test Case</b>
+            <br>
+            {{form.test}}
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

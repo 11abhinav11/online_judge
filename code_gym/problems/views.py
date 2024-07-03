@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import problem
 from django.forms import formset_factory
-from .forms import add_problem as adding_problem, add_test as adding_test
+from .forms import add_problem as adding_problem, add_test as adding_test, question_form
 
 
 def problems(request):
@@ -66,3 +66,13 @@ def add_test(request, id):
             return redirect("index")
     else:
         return redirect("index")
+
+
+def solve(request, id):
+    question = problem.objects.get(Problem_ID=id)
+    if request.user.is_authenticated:
+        form = question_form(request.POST)
+        return render(request, 'question.html', {'form': form, 'question': question})
+    else:
+        form = question_form()
+        return render(request, 'question.html', {'form': form, 'question': question})

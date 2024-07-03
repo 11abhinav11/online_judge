@@ -6,5 +6,5 @@ urlpatterns = [
     path('/dashboard', views.dashboard, name='dashboard'),
     path('/add', views.add_problem, name='add problem'),
     path('/test/<int:id>', views.add_test, name='add test case'),
-    # path('/<int:id>', views.solve, name='solve question'),
+    path('/<int:id>', views.solve, name='solve question'),
 ]
