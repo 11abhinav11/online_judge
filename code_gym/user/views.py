@@ -19,9 +19,9 @@ def index(request):
             User_ID=user_obj, verdict="Accepted").order_by('-time_stamp')
         solved_list = user.problems_solved.all()
         diff = {'Hard': 0, 'Easy': 0, 'Medium': 0}
-        tag_context = {'Array': 0, 'Linked_List': 0, 'Hash_Table': 2, 'Stack': 2, 'Dynamic_Programming': 0,
+        tag_context = {'Array': 0, 'Linked_List': 0, 'Hash_Table': 0, 'Stack': 0, 'Dynamic_Programming': 0,
                        'Backtracking': 0, 'Binary_Search': 0,
-                       'String': 0, 'Sorting': 0, 'Greedy': 4, 'Matrix': 3}
+                       'String': 0, 'Sorting': 0, 'Greedy': 0, 'Matrix': 0}
         for prob in submission_list:
             lang_dict[prob.language] += 1
             diff[prob.Problem_Id.difficulty] += 1
