@@ -6,6 +6,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
     <style>
       *:focus {
     box-shadow: none !important;
@@ -13,7 +14,76 @@
     textarea {
   resize: none;
 }
+/* ambiance theme for codemirror */
+
+/* Color scheme */
+
+.cm-s-ambiance .cm-header { color: blue; }
+.cm-s-ambiance .cm-quote { color: #24C2C7; }
+
+.cm-s-ambiance .cm-keyword { color: #cda869; }
+.cm-s-ambiance .cm-atom { color: #CF7EA9; }
+.cm-s-ambiance .cm-number { color: #78CF8A; }
+.cm-s-ambiance .cm-def { color: #aac6e3; }
+.cm-s-ambiance .cm-variable { color: #ffb795; }
+.cm-s-ambiance .cm-variable-2 { color: #eed1b3; }
+.cm-s-ambiance .cm-variable-3, .cm-s-ambiance .cm-type { color: #faded3; }
+.cm-s-ambiance .cm-property { color: #eed1b3; }
+.cm-s-ambiance .cm-operator { color: #fa8d6a; }
+.cm-s-ambiance .cm-comment { color: #555; font-style:italic; }
+.cm-s-ambiance .cm-string { color: #8f9d6a; }
+.cm-s-ambiance .cm-string-2 { color: #9d937c; }
+.cm-s-ambiance .cm-meta { color: #D2A8A1; }
+.cm-s-ambiance .cm-qualifier { color: yellow; }
+.cm-s-ambiance .cm-builtin { color: #9999cc; }
+.cm-s-ambiance .cm-bracket { color: #24C2C7; }
+.cm-s-ambiance .cm-tag { color: #fee4ff; }
+.cm-s-ambiance .cm-attribute { color: #9B859D; }
+.cm-s-ambiance .cm-hr { color: pink; }
+.cm-s-ambiance .cm-link { color: #F4C20B; }
+.cm-s-ambiance .cm-special { color: #FF9D00; }
+.cm-s-ambiance .cm-error { color: #AF2018; }
+
+.cm-s-ambiance .CodeMirror-matchingbracket { color: #0f0; }
+.cm-s-ambiance .CodeMirror-nonmatchingbracket { color: #f22; }
+
+.cm-s-ambiance div.CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
+.cm-s-ambiance.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
+.cm-s-ambiance .CodeMirror-line::selection, .cm-s-ambiance .CodeMirror-line > span::selection, .cm-s-ambiance .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
+.cm-s-ambiance .CodeMirror-line::-moz-selection, .cm-s-ambiance .CodeMirror-line > span::-moz-selection, .cm-s-ambiance .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
+
+/* Editor styling */
+
+.cm-s-ambiance.CodeMirror {
+  line-height: 1.40em;
+  color: #E6E1DC;
+  background-color: #222;
+  
+}
+
+.cm-s-ambiance .CodeMirror-gutters {
+  background: #222;
+  border-right: 0px solid #4D4D4D;
+  
+}
+
+.cm-s-ambiance .CodeMirror-linenumber {
+  text-shadow: 0px 1px 1px #4d4d4d;
+  color: white;
+  padding: 0 5px;
+}
+
+.cm-s-ambiance .CodeMirror-guttermarker { color: #aaa; }
+.cm-s-ambiance .CodeMirror-guttermarker-subtle { color: #111; }
+
+.cm-s-ambiance .CodeMirror-cursor { border-left: 1px solid #7991E8; }
+
+.cm-s-ambiance .CodeMirror-activeline-background {
+  background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.031);
+}
+
     </style>
+    {% block head %}{% endblock %}
   </head>
   <body >
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,13 +103,13 @@
           </form>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Pull request</a>
+              <a class="nav-link" href="/">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Issues</a>
+              <a class="nav-link" href="/problem">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Marketplace</a>
+              <a class="nav-link" href="#">Contests</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Explore</a>
@@ -55,9 +125,12 @@
 
             {% if user.is_authenticated %}
             <li class="nav-item me-3 me-lg-0 dropdown">
-              <a class="nav-link" href="#profile" id="navbarDropdown1" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22" alt="" loading="lazy" />
-              </a>
+              <div class="d-flex flex-row gap-2">
+                <a class="nav-link" href="/" id="navbarDropdown1" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                  <img src="https://assets.leetcode.com/users/default_avatar.jpg" class="rounded-circle" height="22" alt="" loading="lazy" />
+                </a>
+                <a class="btn text-white" href="/logout">Logout</a>
+              </div>
             </li>
             {% else %}
             <li class="nav-item">
@@ -75,5 +148,5 @@
   </body>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
+
 </html>

@@ -3,17 +3,23 @@
 {% block content %}
 <div class="container  vh-100 d-flex justify-content-center align-items-center bg-secondary">
     <div class="bg-dark text-white rounded">
-<div class="d-inline-flex flex-row mb-3 justify-content-center align-items-center " >    
+<div class="d-inline-flex flex-column gap-3 mb-3 justify-content-center align-items-center " style="height: 500px; width: 500px;">   
+    <img class="img-fluid" style="height: 30%; width: 30%;" src="https://www.shutterstock.com/image-vector/biceps-weight-solid-icon-gym-600nw-2386649973.jpg"> 
     <form method="post">
         {% csrf_token %}
     <div class="d-inline-flex flex-column p-2 ">
     {% for field in form %}
         <div class="p-2 ">
             {{ field.errors}}
+            <div class=" d-flex flex-row gap-3">
             <div>{{ field.label_tag}}</div><div>{{field}}</div>
+            </div>
         </div>
     {% endfor %}
+    <div class="d-flex flex-row gap-5">
     <button class="btn btn-primary" type="submit">Login</button>
+    <a href="/signup" class="btn btn-primary" type="submit">SignUp</a>
+    </div>
     </form>
     </div>
 </div>

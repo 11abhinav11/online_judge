@@ -1,40 +1,229 @@
 {% extends "base.html" %}
 {% block title %}Problems{% endblock %}
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js" integrity="sha512-l8ZIWnQ3XHPRG3MQ8+hT1OffRSTrFwrph1j1oc1Fzc9UKVGef5XN9fdO0vm3nW0PRgQ9LJgck6ciG59m69rvfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closebrackets.min.js" integrity="sha512-tsjcYO5hFvViRssxiM7Jhd8601epWOx1He3Hl4yuI5dKKPxr43KxkOhc9GZeeqzlYJm9ABb7UPA9697NiqZZ7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js" integrity="sha512-2M0GdbU5OxkGYMhakED69bw0c1pW3Nb0PeF3+9d+SnwN1ryPx3wiDdNqK3gSM7KAU/pEV+2tFJFbMKjKAahOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/scroll/simplescrollbars.min.css" integrity="sha512-2y3NTsei81d5emn5nwrdflyI5EGULwKXRZ0BCbO55cjgQ8x62X4ydH/jbnzrKnxArstf79F9n6z1j2MtVmJ8YA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/scroll/simplescrollbars.min.js" integrity="sha512-1Vc3i/yplqkVbJBGgEpx9odVj3SLHMx2EOsQOMJsHbM5LRPL2iaPH2sEE+8sZOCqvuXGignKEwmTqO6/b11RqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+    .example::-webkit-scrollbar {
+  display: none;
+}
+.CodeMirror::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+</style>
+{% endblock %}
 {% block content %}
-<div class="d-flex flex-row mb-3 gap-3 p-3" style="background-color: black;">
-    <div class="border border-0 shadow mb-5 rounded-3 flex h-full w-full flex-col w-50 overflow-auto text-white" style="max-height: 700px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
-        <div class="p-2 border-bottom text-white" style="background-color: #333;">
-            <i class="fa fa-solid fa-bars" style="color: #74C0FC;"></i>
-            <b>Description</b>
-        </div>
-        <h1 class="p-3">{{question.title}}</h1>
-        <p class="p-3">{{question.question|linebreaksbr}}</p>
-        <p class="p-3">Tags {{question.tags}}</p>
+<div class="d-flex flex-row mb-3 gap-2 p-3" style="background-color: black;">
+    <div class="example border border-0 shadow mb-5 rounded flex h-full w-full flex-col w-50 overflow-auto text-white" style="max-height: 633px; height: 633px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
+            <div class="p-2 text-white" style="background-color: #333;">
+            <ul class="nav nav-tabs border-0 gap-3" style="background-color: #333; height: 20px;" id="problemtab" role="tablist">
+                <li class="nav-item p-0" role="presentation" style="width: 100px;"><div>
+                <button class="p-0 nav-link active text-white border-0 rounded" style="background-color: #333; width: 110px; max-width: 150px;" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">
+                    <i class="fa fa-solid fa-bars" style="color: #74C0FC;"></i>
+                    <b>Description</b>
+                </button>
+                </li>
+                <li class="nav-item p-0" role="presentation">
+                  <button class="nav-link text-white border-0 rounded p-0" id="submissions-tab" style="background-color: #333; width: 120px; max-width: 150px;" data-bs-toggle="tab" data-bs-target="#submissions" type="button" role="tab" aria-controls="submissions" aria-selected="false">
+                    <i class="fa fa-regular fa-clock-o" style="color: #74C0FC;"></i>
+                    <b>  Submissions</b>
+                </button>
+                </li>
+            </ul>
+            </div>
+            <br>
+
+            <div class="tab-content" id="problemtab">
+                <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="tabtest-">
+                    <h1 class="p-3">{{question.title}}</h1>
+                    <div class="p-3 d-flex flex-row gap-2">
+                    <div class="border-0 rounded text-info" style="background-color: #333; padding: 2px;">Tags {{question.problem_tags}}</div>
+                    <div class="border-0 rounded" style="background-color: #333; padding: 2px;" id="diff">{{question.difficulty}}</div>
+                    </div>
+                    <p class="p-3">{{question.question|linebreaksbr}}</p>
+                </div>
+                <div class="tab-pane fade" id="submissions" role="tabpanel" aria-labelledby="output-tab">
+                    {% if submissions %}
+                    <table class="table table-striped mb-0 table-dark">
+                        <thead class="small text-uppercase bg-body text-muted">
+                          <tr>
+                            <th scope="col">Verdict</th>
+                            <th scope="col">Language</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Note</th>
+                          </tr>
+                        </thead>
+                        {% for sub in submissions %}
+                        <tbody>
+                          <tr>
+                            <th class="verdict" scope="row" style="color: red; ">{{sub.verdict}}</th>
+                            <td class="p-0 rounded border-0" style="background-color: #222;">{{sub.language}}</td>
+                            <td>{{sub.time_stamp}}</td>
+                            
+                            <td></td>
+                          </tr>
+                        </tbody>
+                        {% endfor %}
+                      </table>
+                    {% else %}
+                    <table class="table table-striped mb-0 table-dark" style="max-width: 80%; margin-left: 35px;">
+                        <thead>
+                          <tr>
+                            <th scope="col">Verdict</th>
+                            <th scope="col">Language</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Note</th>
+                          </tr>
+                        </thead>
+                    </table>
+                        <h6 style="margin-left: 30%; margin-top:40px;">No Submissions</h6>
+                    {% endif %}
+                </div>
+
+            </div>
+           
     </div>
-    <div class="flex h-full w-full flex-col shadow mb-5 border border-0 rounded-3 w-50" style="max-height: 700px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
-        <div class="p-2 text-white border border-0 rounded-3" style="background-color: #333;">
+
+    <div class="flex h-full w-full flex-col shadow mb-5 border border-0 rounded-3 w-50" style="max-height: 700px; background-color: black; margin: 0; padding: 0; box-sizing: border-box;">
+    <div class="d-flex flex-column gap-2 mb-3 p-0">
+        <div class="border border-0 rounded-3" style="background-color: #222;">
+        <div class="p-2 text-white border border-0 rounded-top" style="background-color: #333;">
             <i class="fa fa-solid fa-bug" style="color: #74C0FC;"></i>
             <b>Code</b>
         </div>
         <form method="post">
             {% csrf_token %}
-        <div class="p-2 border-top text-white">
+        <div class="p-2 text-white">
             <b>{{ form.language}}</b>
         </div>
-        <div class="border-top  p-2 overflow-auto text-white" style="max-height: 600px;">
+        <div class="example border-secondary  p-2 overflow-auto text-white" style="max-height: 250px;">
             {{form.code}}
+            <textarea class="form-control border border-0 text-white" style="max-width: 100%; display:none; background-color: #222; max-height:100px; height: 95px; resize: none;" id="editor">{{input}}</textarea>
         </div>
-        <div class="d-flex flex-row-reverse p-2 overflow-auto text-white gap-2 border-bottom align-content-end" style="max-height: 200px;">
-            <button class="btn btn-success ">Submit</button>
-            <button class="btn text-white " style="background-color: #333;">Run</button>
+        <div class="d-flex flex-row-reverse p-2 overflow-auto text-white gap-2 align-content-end" style="max-height: 50px;">
+            {% if user.is_authenticated %}
+            <input class="btn btn-success" type="submit" name="submit" value="submit"></button>
+            <input class="btn text-white " style="background-color: #333;" type="submit" name="run" value="run"></button>
+            {% else %}
+            
+            {% endif %}
         </div>
-        <div class="p-2 text-white">
-            <b>Test Case</b>
+        </div>
+        <div class="example border border-0 shadow mb-5 rounded overflow-auto text-white" style="max-height: 230px; height: 230px; background-color: #222; margin: 0; padding: 0; box-sizing: border-box;">
+
+            <div class="p-2 text-white" style="background-color: #333;">
+            <ul class="nav nav-tabs border-0 gap-2" style="background-color: #333; height: 20px;" id="myTab" role="tablist">
+                <li class="nav-item p-0" role="presentation" style="width: 100px;"><div>
+                <button class="p-0 nav-link active text-white border-0 rounded" style="background-color: #333;" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab" aria-controls="test" aria-selected="true">
+                    <i class="fa fa-solid fa-code" style="color: #74C0FC;"></i>
+                    <b>  TestCase</b>
+                </button>
+                </li>
+                <li class="nav-item p-0" role="presentation">
+                  <button class="nav-link text-white border-0 rounded p-0" id="output-tab" style="background-color: #333;" data-bs-toggle="tab" data-bs-target="#output" type="button" role="tab" aria-controls="output" aria-selected="false">
+                    <i class="fa fa-thin fa-check" style="color: #74C0FC;"></i>
+                    <b>Test-Result</b>
+                </button>
+                </li>
+            </ul>
+            </div>
             <br>
-            {{form.test}}
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="test" role="tabpanel" aria-labelledby="tabtest-">{{form.test}}</div>
+                <div class="tab-pane fade" id="output" role="tabpanel" aria-labelledby="output-tab">
+                    {% if output %}
+                    <b style="margin-left: 15px;">Input</b>
+                    <textarea disabled class="form-control border border-0 text-white example" style="margin-left: 15px; max-width: 60%; background-color: #333; max-height:80px; height: 80px; resize: none;">{{input}}
+                    </textarea>
+                    <br>
+                    <b style="margin-left: 15px;">Output</b>
+                    <textarea disabled class="form-control border border-0 text-white example" style="margin-left: 15px; max-width: 60%; background-color: #333; max-height:80px; height: 80px; resize: none;">{{output}}
+                    </textarea>
+                    {% else %}
+                    <h7 style="position: relative; top: 60%; left: 35%;"> You must run your code first </h7>
+                    {% endif %}
+                </div>
+            </div>
+              
         </div>
         </form>
     </div>
+    </div>
 </div>
+<script>
 
+var editor = CodeMirror.fromTextArea
+(document.getElementById('editor'),{
+mode:'python',
+theme:"ambiance",
+lineNumbers:true,
+autoCloseBrackets: true,
+scrollbarStyle:"simple",
+});
+editor.on('change',
+  () => {
+    let text = editor.getValue()
+    document.getElementById('code_editor').value=text;
+    var token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({
+        type:'POST',
+        url:'/problem/save_code',
+        data:{
+            code:text,
+            PID:'{{ question.Problem_ID }}',
+            Username:'{{ user.id }}'
+        },
+        headers: {'X-CSRFToken': token}
+    })
+})
+
+window.onload = function() {
+    var ver = document.getElementsByClassName('verdict')
+    for(let node=0;node<ver.length;node++){
+        if(ver[node].innerHTML=='Accepted'){
+            ver[node].style = "color:green";
+        }
+        else{
+            ver[node].innerHTML='Wrong Answer'
+            ver[node].style = "color:red";
+        }
+    }
+
+
+    var dif = document.getElementById('diff').innerHTML
+    if(dif=='Easy'){
+        document.getElementById("diff").style.color = "#08e8de";
+    }
+    else if(dif=='Medium'){
+        document.getElementById("diff").style.color = "#fff600";
+    }
+    else{
+        document.getElementById("diff").style.color = "#FA2C00";
+    }
+    if('{{saved_code}}'){
+        string = '{{saved_code}}'
+        string = string.replaceAll("&#x27;","'")
+        string = string.replaceAll("&quot;",'"')
+        string = string.replaceAll("&lt;",'<')
+        string = string.replaceAll("&gt;",'>')
+        string = string.replaceAll("&amp;",'&')
+        string = string.replaceAll("&#$%;",'\\')
+        editor.setValue(string);
+    }
+};
+</script>
 {% endblock %}

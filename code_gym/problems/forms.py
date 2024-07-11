@@ -4,10 +4,9 @@ from .models import problem, test_cases, submission
 
 
 class add_problem(ModelForm):
-
     class Meta:
         model = problem
-        fields = ["title", "difficulty", "tags", "question"]
+        fields = ["title", "difficulty", "problem_tags", "question"]
 
 
 class add_test(ModelForm):
@@ -25,15 +24,19 @@ class question_form(ModelForm):
         widgets = {
             "code": forms.Textarea(attrs={
                 'class': 'form-control border border-0 text-white',
-                'style': 'max-width: 100%; background-color: #222; max-height:350px; height: 400px; resize: none;',
+                'id': 'code_editor',
+                'name': 'code_editor',
+                'style': 'max-width: 100%; display:none;  background-color: #222; max-height:350px; height: 200px; resize: none;',
 
             }),
             "test": forms.Textarea(attrs={
-                'class': 'form-control border border-0 text-white',
-                'style': 'max-width: 35%; background-color: #333; max-height:130px; resize: none;',
+                'id': 'gg',
+                'class': 'form-control border border-0 text-white example',
+                'style': 'margin-left: 15px; max-width: 60%; background-color: #333; max-height:100px; height:100px; resize: none;',
             }),
             "language": forms.Select(attrs={
-                'class': 'form-control border border-0 text-white',
-                'style': 'max-width: 100px; background-color: #333;'
+                'class': 'form-control border border-0 text-white form-select',
+                'style': 'max-width: 100px; background-color: #222;',
+                'id': 'lang'
             })
         }

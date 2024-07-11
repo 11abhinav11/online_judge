@@ -7,4 +7,5 @@ urlpatterns = [
     path('/add', views.add_problem, name='add problem'),
     path('/test/<int:id>', views.add_test, name='add test case'),
     path('/<int:id>', views.solve, name='solve question'),
+    path('/save_code', views.save_code, name='save code'),
 ]
