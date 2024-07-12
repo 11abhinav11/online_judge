@@ -9,8 +9,6 @@ This repository contains the source code for an Online Judge Competitive Program
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Running Tests](#running-tests)
-6. [Contributing](#contributing)
-7. [License](#license)
 
 ## Features
 
@@ -78,3 +76,10 @@ To run the tests for the Django application, use the following command:
 
 ```bash
 docker-compose exec web python manage.py test
+```
+
+![image](https://github.com/user-attachments/assets/1136f499-5448-4117-9cea-a6caa748ff08)
+
+
+![image](https://github.com/user-attachments/assets/939f0725-a344-45c7-a234-61b147b4560d)
+
